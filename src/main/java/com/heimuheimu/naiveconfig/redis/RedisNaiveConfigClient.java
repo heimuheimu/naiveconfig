@@ -156,7 +156,7 @@ public class RedisNaiveConfigClient implements NaiveConfigClient, Closeable {
                         LOG.info("RedisSubscribeClient rescue task has been started. Host: `{}`. Channel: `{}`. Ping period: `{}`.",
                                 host, channel, pingPeriod);
                         RedisSubscribeClient client = null;
-                        while (client != null) {
+                        while (client == null) {
                             try {
                                 client = createRedisSubscribeClient();
                                 redisSubscribeClient = client;

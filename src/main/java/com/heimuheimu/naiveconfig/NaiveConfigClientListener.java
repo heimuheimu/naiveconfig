@@ -12,6 +12,13 @@ package com.heimuheimu.naiveconfig;
 public interface NaiveConfigClientListener {
 
     /**
+     * NaiveConfig 客户端初始化完成后，将触发该监听事件，该事件仅触发一次
+     *
+     * @param client 初始化完成的 NaiveConfig 客户端
+     */
+    void onInitialized(NaiveConfigClient client);
+
+    /**
      * 当 Key 对应的配置信息发生变更时，将触发该监听事件
      *
      * @param client 接收到配置信息变更事件的 NaiveConfig 客户端

@@ -90,6 +90,12 @@ public class RedisNaiveConfigClient implements NaiveConfigClient, Closeable {
                 try {
                     this.redisSubscribeClient = createRedisSubscribeClient();
                     state = BeanStatusEnum.NORMAL;
+                    try {
+                        listener.onInitialized(this);
+                    } catch (Exception e) {
+                        LOG.error("Call NaiveConfigClientListener#onInitialized() failed. Host: `" + host + "`. Channel: `"
+                                + channel + "`. Ping period: `" + pingPeriod + "`.", e);
+                    }
                 } catch (Exception e) {
                     LOG.error("Create RedisNaiveConfigClient failed. Host: `" + host + ". Channel: `" + channel
                             + "`. Ping period: `" + pingPeriod + "`.", e);

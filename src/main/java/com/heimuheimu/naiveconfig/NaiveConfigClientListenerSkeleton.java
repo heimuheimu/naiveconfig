@@ -9,6 +9,11 @@ package com.heimuheimu.naiveconfig;
 public abstract class NaiveConfigClientListenerSkeleton implements NaiveConfigClientListener {
 
     @Override
+    public void onInitialized(NaiveConfigClient client) {
+        //do nothing
+    }
+
+    @Override
     public void onChanged(NaiveConfigClient client, String key) {
         //do nothing
     }

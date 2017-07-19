@@ -70,7 +70,7 @@ public abstract class RedisSubscribeClient implements Closeable {
     /**
      * 未收到返回值的 PING 命令数量
      */
-    private AtomicInteger unconfirmedPingCount = new AtomicInteger();
+    private final AtomicInteger unconfirmedPingCount = new AtomicInteger();
 
     /**
      * 当前实例使用的私有锁
@@ -85,7 +85,7 @@ public abstract class RedisSubscribeClient implements Closeable {
      * @throws IllegalArgumentException 如果 Redis 服务主机地址不符合规则，将会抛出此异常
      * @throws NaiveConfigException 如果 与 Redis 服务建立的 Socket 连接过程中发生错误，将会抛出此异常
      */
-    public RedisSubscribeClient(String host, String channel) throws IllegalArgumentException, IOException {
+    public RedisSubscribeClient(String host, String channel) throws IllegalArgumentException, NaiveConfigException {
         this(host, channel, 30);
     }
 

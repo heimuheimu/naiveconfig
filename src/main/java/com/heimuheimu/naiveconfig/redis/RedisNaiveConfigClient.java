@@ -108,6 +108,7 @@ public class RedisNaiveConfigClient implements NaiveConfigClient, Closeable {
 
     /**
      * 执行 NaiveConfig 客户端关闭操作
+     * <p>注意：该方法不会触发 {@link NaiveConfigClientListener#onClosed(NaiveConfigClient)} 事件</p>
      */
     @Override
     public void close() {
@@ -115,7 +116,7 @@ public class RedisNaiveConfigClient implements NaiveConfigClient, Closeable {
             if (state != BeanStatusEnum.CLOSED) {
                 state = BeanStatusEnum.CLOSED;
                 if (redisSubscribeClient != null) {
-                    redisSubscribeClient.close();
+                    redisSubscribeClient.close(false);
                 }
             }
         }

@@ -218,7 +218,7 @@ public abstract class RedisSubscribeClient implements Closeable {
         close(true);
     }
 
-    private void close(boolean triggerOnClosedEvent) {
+    public void close(boolean triggerOnClosedEvent) {
         synchronized (lock) {
             if (state != BeanStatusEnum.CLOSED) {
                 long startTime = System.currentTimeMillis();

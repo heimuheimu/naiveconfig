@@ -40,12 +40,12 @@ public interface NaiveConfigManager {
     /**
      * 在配置中心设置 Key 对应的配置信息，并通知已监听该配置信息变更的 NaiveConfig 客户端，返回成功接收该变更信息的 NaiveConfig 客户端数量。
      * <p>如果具体实现无法返回成功接收变更的客户端数量，应返回 -1</p>
+     * <p>value 允许为 {@code null}，如果为 {@code null}，仅进行配置信息变更通知，不会在配置中心设置 Key 对应的配置信息</p>
      *
      * @param key 配置信息 Key，不允许为 {@code null}
-     * @param value 配置信息，不允许为 {@code null}
+     * @param value 配置信息，允许为 {@code null}，如果为 {@code null}，仅进行配置信息变更通知，不会在配置中心设置 Key 对应的配置信息
      * @return receivedClients 成功接收该变更信息的 NaiveConfig 客户端数量
      * @throws NullPointerException 如果 Key 为 {@code null}，将抛出此异常
-     * @throws NullPointerException 如果 Value 为 {@code null}，将抛出此异常
      * @throws IllegalArgumentException Key 字节长度超过 {@link #MAX_KEY_LENGTH}，将抛出此异常
      * @throws NaiveConfigException 设置配置信息过程中如果发生异常，将抛出此异常
      */

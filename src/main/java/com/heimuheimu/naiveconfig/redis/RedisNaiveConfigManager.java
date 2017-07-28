@@ -48,8 +48,10 @@ public class RedisNaiveConfigManager implements NaiveConfigManager {
 
     @Override
     public int set(String key, Object value) throws NullPointerException, IllegalArgumentException, NaiveConfigException {
-        redisClient.set(key, value);
-        return  redisClient.publish(channel, key);
+        if (value != null) {
+            redisClient.set(key, value);
+        }
+        return redisClient.publish(channel, key);
     }
 
     @Override

@@ -110,6 +110,7 @@ public abstract class RedisData {
      * 返回 Arrays 类型数据内容的数组长度，如果 Arrays 为 {@code null}，该方法将返回 -1。
      * <p>非 Arrays 类型数据不允许调用此方法，如果调用，将会抛出 {@link UnsupportedOperationException} 异常。</p>
      *
+     * @return Arrays 类型数据内容的数组长度
      * @throws UnsupportedOperationException 如果当前数据类型是非 Arrays 类型数据，将会抛出此异常
      * @see #isArray()
      * @see #get(int)

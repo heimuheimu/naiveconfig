@@ -25,7 +25,7 @@
 package com.heimuheimu.naiveconfig.constant;
 
 /**
- * Bean状态枚举类
+ * Bean 状态枚举类
  *
  * @author heimuheimu
  */

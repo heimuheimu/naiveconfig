@@ -92,7 +92,6 @@ public class RedisDataReader {
         }
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     private RedisBulkString readBulkString() throws IOException {
         byte[] lengthBytes = readLine();
         if (lengthBytes != null) {
@@ -145,7 +144,6 @@ public class RedisDataReader {
         }
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     private byte[] readLine() throws IOException {
         bis.mark(Integer.MAX_VALUE);
         int length = 0;

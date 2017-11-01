@@ -50,7 +50,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * <p>当前是实现是线程安全的。</p>
  *
  * @author heimuheimu
- * @ThreadSafe
  */
 public abstract class RedisSubscribeClient implements Closeable {
 

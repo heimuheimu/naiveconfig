@@ -40,9 +40,7 @@ import java.net.Socket;
  * <p>注意：当前实现是线程安全的</p>
  *
  * @author heimuheimu
- * @ThreadSafe
  */
-@SuppressWarnings("WeakerAccess")
 public class OneTimeRedisClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(OneTimeRedisClient.class);

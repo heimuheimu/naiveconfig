@@ -42,7 +42,6 @@ import java.util.concurrent.atomic.AtomicLong;
  * <p>当前是实现是线程安全的。</p>
  *
  * @author heimuheimu
- * @ThreadSafe
  */
 public class RedisNaiveConfigClient implements NaiveConfigClient, Closeable {
 

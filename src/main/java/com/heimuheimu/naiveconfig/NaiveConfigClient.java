@@ -32,7 +32,6 @@ import com.heimuheimu.naiveconfig.exception.NaiveConfigException;
  *
  * @author heimuheimu
  * @see NaiveConfigClientListener
- * @ThreadSafe
  */
 public interface NaiveConfigClient {
 

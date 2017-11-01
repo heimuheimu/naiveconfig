@@ -31,12 +31,11 @@ import com.heimuheimu.naiveconfig.exception.NaiveConfigException;
  * 基于 Redis 服务实现的 NaiveConfig 配置管理器，提供配置信息获取、设置、删除等管理操作。
  * 在每次配置信息变更后，都会通过 Redis 的 PUBLISH 命令，通知已订阅该 Channel 的 NaiveConfig 客户端，
  * PUBLISH 的消息为变更的配置信息 Key。
- * <p></p>更多的 PUB/SUB 信息请参考文档：<a href="https://redis.io/topics/pubsub">https://redis.io/topics/pubsub</a></p>
+ * <p>更多的 PUB/SUB 信息请参考文档：<a href="https://redis.io/topics/pubsub">https://redis.io/topics/pubsub</a></p>
  * <p>更多 Redis 信息请参考：<a href="https://redis.io">https://redis.io</a></p>
  * <p>当前是实现是线程安全的。</p>
  *
  * @author heimuheimu
- * @ThreadSafe
  */
 public class RedisNaiveConfigManager implements NaiveConfigManager {
 

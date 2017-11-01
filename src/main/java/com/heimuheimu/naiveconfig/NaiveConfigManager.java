@@ -31,7 +31,6 @@ import com.heimuheimu.naiveconfig.exception.NaiveConfigException;
  * <p><b>注意：</b>该接口的实现类必须保证线程安全</p>
  *
  * @author heimuheimu
- * @ThreadSafe
  */
 public interface NaiveConfigManager {
 
@@ -46,7 +45,6 @@ public interface NaiveConfigManager {
      *
      * @return 配置中心远程主机地址
      */
-    @SuppressWarnings("unused")
     String getHost();
 
     /**
@@ -58,7 +56,6 @@ public interface NaiveConfigManager {
      * @throws IllegalArgumentException Key 字节长度超过 {@link #MAX_KEY_LENGTH}，将抛出此异常
      * @throws NaiveConfigException 获取配置信息过程中如果发生异常，将抛出此异常
      */
-    @SuppressWarnings("unused")
     <T> T get(String key) throws NullPointerException, IllegalArgumentException, NaiveConfigException;
 
     /**
@@ -73,7 +70,6 @@ public interface NaiveConfigManager {
      * @throws IllegalArgumentException Key 字节长度超过 {@link #MAX_KEY_LENGTH}，将抛出此异常
      * @throws NaiveConfigException 设置配置信息过程中如果发生异常，将抛出此异常
      */
-    @SuppressWarnings("unused")
     int set(String key, Object value) throws NullPointerException, IllegalArgumentException, NaiveConfigException;
 
     /**
@@ -86,7 +82,6 @@ public interface NaiveConfigManager {
      * @throws IllegalArgumentException Key 字节长度超过 {@link NaiveConfigManager#MAX_KEY_LENGTH}，将抛出此异常
      * @throws NaiveConfigException 删除配置信息过程中如果发生异常，将抛出此异常
      */
-    @SuppressWarnings("unused")
     int delete(String key) throws NullPointerException, IllegalArgumentException, NaiveConfigException;
 
 }

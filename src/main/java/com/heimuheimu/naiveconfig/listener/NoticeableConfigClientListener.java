@@ -38,7 +38,7 @@ import java.util.Map;
 
 /**
  * 该监听器可用于 NaiveConfig 客户端在发生 NaiveConfig 服务不可用或者从不可用状态恢复时，进行实时通知。
- * 并通过 {@link ConfigSyncHandler} 进行变更配置同步，每个 {@link ConfigSyncHandler} 对应一个单独的配置 Key
+ * 并通过 {@link ConfigSyncHandler} 进行变更配置同步，每个 {@link ConfigSyncHandler} 对应一个单独的配置 Key。
  *
  * @author heimuheimu
  */
@@ -115,6 +115,9 @@ public class NoticeableConfigClientListener extends NaiveConfigClientListenerSke
     @Override
     public void onRecovered(NaiveConfigClient client) {
         naiveServiceAlarm.onRecovered(getServiceContext(client));
+        for (ConfigSyncHandler handler : handlerList) {
+            syncConfig(client, handler);
+        }
     }
 
     @SuppressWarnings("unchecked")

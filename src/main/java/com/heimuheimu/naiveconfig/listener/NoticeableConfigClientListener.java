@@ -143,6 +143,7 @@ public class NoticeableConfigClientListener extends NaiveConfigClientListenerSke
     protected ServiceContext getServiceContext(NaiveConfigClient client) {
         ServiceContext serviceContext = new ServiceContext();
         serviceContext.setName("NaiveConfig");
+        serviceContext.setHost(host);
         serviceContext.setProject(project);
         serviceContext.setRemoteHost(client.getHost());
         return serviceContext;

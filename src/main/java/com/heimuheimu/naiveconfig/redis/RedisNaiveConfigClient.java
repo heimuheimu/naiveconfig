@@ -33,7 +33,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * 基于 Redis 服务实现的 NaiveConfig 客户端，配置信息变更监听通过 Redis PUB/SUB 命令实现。
@@ -46,8 +45,6 @@ import java.util.concurrent.atomic.AtomicLong;
 public class RedisNaiveConfigClient implements NaiveConfigClient, Closeable {
 
     private static final Logger LOG = LoggerFactory.getLogger(RedisNaiveConfigClient.class);
-
-    private final AtomicLong subscriberThreadCount = new AtomicLong(0);
 
     private final OneTimeRedisClient redisClient;
 
@@ -74,7 +71,7 @@ public class RedisNaiveConfigClient implements NaiveConfigClient, Closeable {
     private final Object rescueTaskLock = new Object();
 
     /**
-     * 构造一个基于 Redis 服务实现的 NaiveConfig 客户端
+     * 构造一个基于 Redis 服务实现的 NaiveConfig 客户端，默认 Redis 操作超时时间为 30 秒。
      *
      * @param host Redis 服务主机地址，由主机名和端口组成，":"符号分割，例如：localhost:6379
      * @param channel  当前 Redis 订阅客户端订阅的 Channel 信息，不允许为 {@code null} 或空字符串
@@ -85,11 +82,28 @@ public class RedisNaiveConfigClient implements NaiveConfigClient, Closeable {
      * @throws NullPointerException 如果 listener 为 {@code null}，将会抛出此异常
      */
     public RedisNaiveConfigClient(String host, String channel, int pingPeriod, NaiveConfigClientListener listener) throws IllegalArgumentException {
+        this(host, channel, pingPeriod, listener, 30000);
+    }
+
+    /**
+     * 构造一个基于 Redis 服务实现的 NaiveConfig 客户端。
+     *
+     * @param host Redis 服务主机地址，由主机名和端口组成，":"符号分割，例如：localhost:6379
+     * @param channel  当前 Redis 订阅客户端订阅的 Channel 信息，不允许为 {@code null} 或空字符串
+     * @param pingPeriod PING 命令发送时间间隔，单位：秒。用于心跳检测。如果该值小于等于 0，则不进行心跳检测
+     * @param listener NaiveConfig 客户端事件监听器，不允许为 {@code null}
+     * @param timeout Redis 操作超时时间，单位：毫秒，不允许小于等于 0
+     * @throws IllegalArgumentException 如果 Redis 服务主机地址不符合规则，将会抛出此异常
+     * @throws IllegalArgumentException 如果 Channel 为 {@code null} 或空字符串，将会抛出此异常
+     * @throws NullPointerException 如果 listener 为 {@code null}，将会抛出此异常
+     * @throws IllegalArgumentException 如果 Redis 操作超时时间小于等于 0，将会抛出此异常
+     */
+    public RedisNaiveConfigClient(String host, String channel, int pingPeriod, NaiveConfigClientListener listener, int timeout) throws IllegalArgumentException {
         this.host = host;
         this.channel = channel;
         this.pingPeriod = pingPeriod;
         this.listener = listener;
-        this.redisClient = new OneTimeRedisClient(host);
+        this.redisClient = new OneTimeRedisClient(host, timeout);
     }
 
     @Override

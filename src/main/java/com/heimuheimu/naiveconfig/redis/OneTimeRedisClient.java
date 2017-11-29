@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 /**
@@ -61,19 +62,44 @@ public class OneTimeRedisClient {
     private final int port;
 
     /**
-     * 构造一个一次性 Redis 客户端
+     * Redis 操作超时时间
+     */
+    private final int timeout;
+
+    /**
+     * 构造一个一次性 Redis 客户端，默认 Redis 操作超时时间为 30 秒。
      *
      * @param host Redis 服务主机地址，由主机名和端口组成，":"符号分割，例如：localhost:6379
      * @throws IllegalArgumentException 如果 Redis 服务主机地址不符合规则，将会抛出此异常
      */
     public OneTimeRedisClient(String host) throws IllegalArgumentException {
+        this(host, 30000);
+    }
+
+    /**
+     * 构造一个一次性 Redis 客户端。
+     *
+     * @param host Redis 服务主机地址，由主机名和端口组成，":"符号分割，例如：localhost:6379
+     * @param timeout Redis 操作超时时间，单位：毫秒，不允许小于等于 0
+     * @throws IllegalArgumentException 如果 Redis 操作超时时间小于等于 0，将会抛出此异常
+     * @throws IllegalArgumentException 如果 Redis 服务主机地址不符合规则，将会抛出此异常
+     */
+    public OneTimeRedisClient(String host, int timeout) throws IllegalArgumentException {
+        if (timeout <= 0) {
+            LOG.error("Create OneTimeRedisClient failed: `invalid timeout`. Host: `{}`. Timeout: `{}`.", host, timeout);
+            throw new IllegalArgumentException("Create OneTimeRedisClient failed: `invalid timeout`. Host: `" + host
+                    + "`. Timeout: `" + timeout + "`.");
+        }
+        this.timeout = timeout;
         this.host = host;
         try {
             String[] hostParts = host.split(":");
             hostname = hostParts[0];
             port = Integer.parseInt(hostParts[1]);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid redis host: `" + host + "`. Valid host example: `localhost:6379`.", e);
+            LOG.error("Create OneTimeRedisClient failed: `invalid host`. Host: `{}`. Timeout: `{}`.", host, timeout);
+            throw new IllegalArgumentException("Create OneTimeRedisClient failed: `invalid timeout`. Host: `" + host
+                    + "`. Timeout: `" + timeout + "`.", e);
         }
     }
 
@@ -108,7 +134,7 @@ public class OneTimeRedisClient {
             getCommandDatas[0] = new RedisBulkString("GET".getBytes(RedisData.UTF8));
             getCommandDatas[1] = new RedisBulkString(keyBytes);
             RedisArray getCommand = new RedisArray(getCommandDatas);
-            socket = new Socket(hostname, port);
+            socket = createSocket();
             OutputStream outputStream = socket.getOutputStream();
             outputStream.write(getCommand.getRespByteArray());
             outputStream.flush();
@@ -172,7 +198,7 @@ public class OneTimeRedisClient {
             setCommandDatas[1] = new RedisBulkString(keyBytes);
             setCommandDatas[2] = new RedisBulkString(encode(value));
             RedisArray setCommand = new RedisArray(setCommandDatas);
-            socket = new Socket(hostname, port);
+            socket = createSocket();
             OutputStream outputStream = socket.getOutputStream();
             outputStream.write(setCommand.getRespByteArray());
             outputStream.flush();
@@ -231,7 +257,7 @@ public class OneTimeRedisClient {
             delCommandDatas[0] = new RedisBulkString("DEL".getBytes(RedisData.UTF8));
             delCommandDatas[1] = new RedisBulkString(keyBytes);
             RedisArray delCommand = new RedisArray(delCommandDatas);
-            socket = new Socket(hostname, port);
+            socket = createSocket();
             OutputStream outputStream = socket.getOutputStream();
             outputStream.write(delCommand.getRespByteArray());
             outputStream.flush();
@@ -289,7 +315,7 @@ public class OneTimeRedisClient {
             publishCommandDatas[1] = new RedisBulkString(channel.getBytes(RedisData.UTF8));
             publishCommandDatas[2] = new RedisBulkString(message.getBytes(RedisData.UTF8));
             RedisArray publishCommand = new RedisArray(publishCommandDatas);
-            socket = new Socket(hostname, port);
+            socket = createSocket();
             OutputStream outputStream = socket.getOutputStream();
             outputStream.write(publishCommand.getRespByteArray());
             outputStream.flush();
@@ -357,6 +383,13 @@ public class OneTimeRedisClient {
                     + ". Invalid key: `" + key + "`. Host: `" + host + "`.");
         }
         return keyBytes;
+    }
+
+    private Socket createSocket() throws IOException {
+        Socket socket = new Socket();
+        socket.setSoTimeout(timeout);
+        socket.connect(new InetSocketAddress(hostname, port), timeout);
+        return socket;
     }
 
 }

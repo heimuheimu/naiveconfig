@@ -25,24 +25,24 @@
 package com.heimuheimu.naiveconfig.constant;
 
 /**
- * Bean 状态枚举类
+ * Bean 状态枚举类。
  *
  * @author heimuheimu
  */
 public enum BeanStatusEnum {
 
     /**
-     * 尚未初始化
+     * 尚未初始化。
      */
     UNINITIALIZED,
 
     /**
-     * 正常
+     * 正常。
      */
     NORMAL,
 
     /**
-     * 已关闭
+     * 已关闭。
      */
     CLOSED
 

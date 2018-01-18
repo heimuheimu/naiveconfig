@@ -22,34 +22,9 @@
  * SOFTWARE.
  */
 
-package com.heimuheimu.naiveconfig;
-
 /**
- * NaiveConfig 客户端事件监听器骨架类，可防止 {@link NaiveConfigClientListener} 在后续版本增加方法时，带来的编译错误。
- *
- * <p><strong>说明：</strong>监听器的实现类必须是线程安全的。</p>
+ * 提供 NaiveConfig 客户端和 NaiveConfig 配置管理器接口定义。
  *
  * @author heimuheimu
  */
-public abstract class NaiveConfigClientListenerSkeleton implements NaiveConfigClientListener {
-
-    @Override
-    public void onInitialized(NaiveConfigClient client) {
-        //do nothing
-    }
-
-    @Override
-    public void onChanged(NaiveConfigClient client, String key) {
-        //do nothing
-    }
-
-    @Override
-    public void onClosed(NaiveConfigClient client) {
-        //do nothing
-    }
-
-    @Override
-    public void onRecovered(NaiveConfigClient client) {
-        //do nothing
-    }
-}
+package com.heimuheimu.naiveconfig;

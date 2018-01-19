@@ -43,6 +43,8 @@ import java.util.Map;
  *     <li>当 NaiveConfig 客户端与配置中心远程主机数据交互通道不可用时，将会进行实时报警通知</li>
  * </ul>
  *
+ * <p><strong>说明：</strong>{@code NoticeableConfigClientListener} 类是线程安全的，可在多个线程中使用同一个实例。</p>
+ *
  * @author heimuheimu
  */
 public class NoticeableConfigClientListener extends NaiveConfigClientListenerSkeleton {

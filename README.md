@@ -55,6 +55,7 @@ log4j.appender.NAIVECONFIG_CONFIG_SYNC_LOGGER.layout.ConversionPattern=%d{ISO860
         <constructor-arg index="2" ref="notifierList"/> <!-- 报警器列表，报警器的信息可查看 naivemonitor 项目 -->
     </bean>
     
+    <!-- NaiveConfig 客户端配置 -->
     <bean id="naiveConfigClient" class="com.heimuheimu.naiveconfig.redis.RedisNaiveConfigClient"
               init-method="init" destroy-method="close">
         <constructor-arg index="0" value="127.0.0.1:6379" /> <!-- Redis 服务地址，与配置管理保持一致 -->

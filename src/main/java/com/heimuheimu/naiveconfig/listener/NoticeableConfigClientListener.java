@@ -26,10 +26,10 @@ package com.heimuheimu.naiveconfig.listener;
 
 import com.heimuheimu.naiveconfig.NaiveConfigClient;
 import com.heimuheimu.naiveconfig.NaiveConfigClientListenerSkeleton;
-import com.heimuheimu.naivemonitor.MonitorUtil;
 import com.heimuheimu.naivemonitor.alarm.NaiveServiceAlarm;
 import com.heimuheimu.naivemonitor.alarm.ServiceAlarmMessageNotifier;
 import com.heimuheimu.naivemonitor.alarm.ServiceContext;
+import com.heimuheimu.naivemonitor.util.MonitorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,8 +37,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 该监听器可用于 NaiveConfig 客户端在发生 NaiveConfig 服务不可用或者从不可用状态恢复时，进行实时通知。
- * 并通过 {@link ConfigSyncHandler} 进行变更配置同步，每个 {@link ConfigSyncHandler} 对应一个单独的配置 Key。
+ * {@code NoticeableConfigClientListener} 提供以下功能：
+ * <ul>
+ *     <li>当配置信息发生变更时，对应的 {@link ConfigSyncHandler} 将会得到通知</li>
+ *     <li>当 NaiveConfig 客户端与配置中心远程主机数据交互通道不可用时，将会进行实时报警通知</li>
+ * </ul>
  *
  * @author heimuheimu
  */
@@ -66,10 +69,25 @@ public class NoticeableConfigClientListener extends NaiveConfigClientListenerSke
      */
     private final List<ConfigSyncHandler> handlerList;
 
+    /**
+     * 构造一个 NaiveConfig 客户端事件监听器。
+     *
+     * @param handlerList 配置信息同步处理器列表
+     * @param project 调用 Memcached 服务的项目名称
+     * @param notifierList 服务不可用或从不可用状态恢复的报警消息通知器列表，不允许 {@code null} 或空
+     */
     public NoticeableConfigClientListener(List<ConfigSyncHandler> handlerList, String project, List<ServiceAlarmMessageNotifier> notifierList) {
         this(handlerList, project, notifierList, null);
     }
 
+    /**
+     * 构造一个 NaiveConfig 客户端事件监听器。
+     *
+     * @param handlerList 配置信息同步处理器列表
+     * @param project 调用 Memcached 服务的项目名称
+     * @param notifierList 服务不可用或从不可用状态恢复的报警消息通知器列表，不允许 {@code null} 或空
+     * @param hostAliasMap 别名 Map，Key 为机器名， Value 为别名，允许为 {@code null}
+     */
     public NoticeableConfigClientListener(List<ConfigSyncHandler> handlerList, String project, List<ServiceAlarmMessageNotifier> notifierList,
                                           Map<String, String> hostAliasMap) {
         this.handlerList = handlerList;
@@ -81,7 +99,6 @@ public class NoticeableConfigClientListener extends NaiveConfigClientListenerSke
         } else {
             this.host = host;
         }
-
     }
 
     @Override
@@ -135,7 +152,7 @@ public class NoticeableConfigClientListener extends NaiveConfigClientListenerSke
     }
 
     /**
-     * 根据 NaiveConfig 客户端构造一个服务及服务所在的运行环境信息
+     * 根据 NaiveConfig 客户端构造一个服务及服务所在的运行环境信息。
      *
      * @param client NaiveConfig 客户端
      * @return 服务及服务所在的运行环境信息

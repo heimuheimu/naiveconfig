@@ -22,28 +22,9 @@
  * SOFTWARE.
  */
 
-package com.heimuheimu.naiveconfig.listener;
-
 /**
- * 配置信息同步处理器，需要和 {@link NoticeableConfigClientListener} 配合使用。
+ * 提供 NaiveConfig 客户端事件监听器的默认实现类。
  *
- * @param <T> 配置信息类型
- * @see NoticeableConfigClientListener
  * @author heimuheimu
  */
-public interface ConfigSyncHandler<T> {
-
-    /**
-     * 获得该配置信息对应的 Key，Key 应保证全局唯一。
-     *
-     * @return 配置信息对应的 Key
-     */
-    String getKey();
-
-    /**
-     * 同步新的配置信息，配置信息可能为 {@code null}。
-     *
-     * @param config 配置信息，有可能为 {@code null}
-     */
-    void sync(T config);
-}
+package com.heimuheimu.naiveconfig.listener;

@@ -47,7 +47,7 @@ public class RedisBulkString extends RedisData {
     private final byte[] valueBytes;
 
     /**
-     * 构造一个 Bulk strings 类型数据
+     * 构造一个 Bulk strings 类型数据。
      *
      * @param valueBytes 内容对应的字节数组，不包含第一个数据类型字节以及结尾 CR、LF 符，允许为 {@code null}
      */

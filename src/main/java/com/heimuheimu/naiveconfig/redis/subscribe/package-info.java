@@ -23,8 +23,12 @@
  */
 
 /**
- * 使用 Redis 实现的 NaiveConfig 客户端和配置管理器。更多 Redis 信息请参考：<a href="https://redis.io">https://redis.io</a>
+ * 提供 Redis 订阅客户端，自动接收指定 Channel 的消息。
+ *
+ * <p>更多的 PUB/SUB 信息请参考文档：<a href="https://redis.io/topics/pubsub">https://redis.io/topics/pubsub</a></p>
+ *
+ * <p>更多 Redis 信息请参考：<a href="https://redis.io">https://redis.io</a></p>
  *
  * @author heimuheimu
  */
-package com.heimuheimu.naiveconfig.redis;
+package com.heimuheimu.naiveconfig.redis.subscribe;

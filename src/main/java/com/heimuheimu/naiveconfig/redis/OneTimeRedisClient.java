@@ -38,7 +38,8 @@ import java.net.Socket;
 
 /**
  * 一次性 Redis 客户端，每次 Redis 操作都会新建立 Socket 连接，在操作结束后关闭该连接。
- * <p>注意：当前实现是线程安全的</p>
+ *
+ * <p><strong>说明：</strong>{@code OneTimeRedisClient} 类是线程安全的，可在多个线程中使用同一个实例。</p>
  *
  * @author heimuheimu
  */
@@ -104,7 +105,7 @@ public class OneTimeRedisClient {
     }
 
     /**
-     * 获得 Redis 服务主机地址，由主机名和端口组成，":"符号分割，例如：localhost:6379
+     * 获得 Redis 服务主机地址，由主机名和端口组成，":"符号分割，例如：localhost:6379。
      *
      * @return Redis 服务主机地址，由主机名和端口组成，":"符号分割，例如：localhost:6379
      */
@@ -117,6 +118,7 @@ public class OneTimeRedisClient {
      * 且字节长度不应超过 {@link NaiveConfigManager#MAX_KEY_LENGTH}。
      *
      * @param key Redis key，不允许为 {@code null}，且字节长度不应超过 {@link NaiveConfigManager#MAX_KEY_LENGTH}
+     * @param <T> Java 对象类型
      * @return Key 对应的 Java 对象，如果 Key 不存在，将返回 {@code null}
      * @throws NullPointerException 如果 Key 为 {@code null}，将抛出此异常
      * @throws IllegalArgumentException Key 字节长度超过 {@link NaiveConfigManager#MAX_KEY_LENGTH}，将抛出此异常
@@ -292,7 +294,7 @@ public class OneTimeRedisClient {
     }
 
     /**
-     * 调用 Redis PUBLISH 命令，在指定 Channel 发布一条消息
+     * 调用 Redis PUBLISH 命令，在指定 Channel 发布一条消息。
      *
      * @param channel 消息发布所在的 Channel，仅允许订阅该 Channel 的客户端接收到当前消息
      * @param message 发布的消息内容
@@ -350,7 +352,7 @@ public class OneTimeRedisClient {
     }
 
     /**
-     * 将 Java 对象编码成字节数组后返回
+     * 将 Java 对象编码成字节数组后返回。
      *
      * @param value 需要进行编码的 Java 对象
      * @return Java 对象编码后的字节数组
@@ -363,7 +365,7 @@ public class OneTimeRedisClient {
     }
 
     /**
-     * 将字节数组解码还原成 Java 对象后返回
+     * 将字节数组解码还原成 Java 对象后返回。
      *
      * @param encodedBytes 对象编码后的字节数组
      * @return Java 对象
@@ -391,5 +393,4 @@ public class OneTimeRedisClient {
         socket.connect(new InetSocketAddress(hostname, port), timeout);
         return socket;
     }
-
 }

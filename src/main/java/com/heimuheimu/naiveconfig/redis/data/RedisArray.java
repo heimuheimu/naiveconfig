@@ -49,7 +49,7 @@ public class RedisArray extends RedisData {
     private final RedisData[] value;
 
     /**
-     * 构造一个 Arrays 类型数据
+     * 构造一个 Arrays 类型数据。
      *
      * @param value Arrays 数据类型内容，允许为 {@code null}
      */

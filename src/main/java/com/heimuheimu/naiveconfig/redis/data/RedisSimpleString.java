@@ -43,7 +43,7 @@ public class RedisSimpleString extends RedisData {
     private final byte[] valueBytes;
 
     /**
-     * 构造一个 Simple strings 类型数据
+     * 构造一个 Simple strings 类型数据。
      *
      * @param valueBytes 数据类型内容对应的字节数组，不包含第一个数据类型字节以及结尾 CR、LF 符，不允许 {@code null}
      * @throws NullPointerException 如果传入的字节数组为 {@code null}，则抛出此异常

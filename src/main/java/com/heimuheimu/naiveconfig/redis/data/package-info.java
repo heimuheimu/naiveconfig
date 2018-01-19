@@ -23,8 +23,10 @@
  */
 
 /**
- * 使用 Redis 实现的 NaiveConfig 客户端和配置管理器。更多 Redis 信息请参考：<a href="https://redis.io">https://redis.io</a>
+ * 提供各类 Redis 数据类型的 Java 对象映射。
+ *
+ * <p>RESP  (Redis Serialization Protocol) 格式定义的更多信息请参考文档：<a href="https://redis.io/topics/protocol">https://redis.io/topics/protocol</a></p>
  *
  * @author heimuheimu
  */
-package com.heimuheimu.naiveconfig.redis;
+package com.heimuheimu.naiveconfig.redis.data;

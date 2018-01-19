@@ -27,7 +27,7 @@ package com.heimuheimu.naiveconfig.redis.data;
 import java.nio.charset.Charset;
 
 /**
- * Redis 客户端与服务端进行通信的数据载体，数据格式为 RESP  (Redis Serialization Protocol).
+ * Redis 客户端与服务端进行通信的数据载体，数据格式为 RESP  (Redis Serialization Protocol)。
  * 关于该格式定义的更多信息请参考文档：<a href="https://redis.io/topics/protocol">https://redis.io/topics/protocol</a>
  *
  * @author heimuheimu

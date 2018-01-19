@@ -44,10 +44,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Redis 订阅客户端，自动接收指定 Channel 的消息
+ * Redis 订阅客户端，自动接收指定 Channel 的消息。
+ *
  * <p>更多的 PUB/SUB 信息请参考文档：<a href="https://redis.io/topics/pubsub">https://redis.io/topics/pubsub</a></p>
+ *
  * <p>更多 Redis 信息请参考：<a href="https://redis.io">https://redis.io</a></p>
- * <p>当前是实现是线程安全的。</p>
+ *
+ * <p><strong>说明：</strong>{@code RedisSubscribeClient} 类是线程安全的，可在多个线程中使用同一个实例。</p>
  *
  * @author heimuheimu
  */

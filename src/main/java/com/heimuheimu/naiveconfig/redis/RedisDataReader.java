@@ -31,11 +31,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Redis 数据读取器，从字节流中读取 {@link com.heimuheimu.naiveconfig.redis.data.RedisData}
- * <p>注意：当前实现是非线程安全的</p>
+ * Redis 数据读取器，从字节流中读取 {@link com.heimuheimu.naiveconfig.redis.data.RedisData}。
+ *
+ * <p><strong>说明：</strong>{@code RedisDataReader} 类是非线程安全的，不允许多个线程使用同一个实例。</p>
  *
  * @author heimuheimu
- * @NotThreadSafe
  */
 public class RedisDataReader {
 

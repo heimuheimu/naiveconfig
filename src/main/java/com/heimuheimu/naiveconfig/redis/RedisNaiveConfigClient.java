@@ -36,9 +36,12 @@ import java.io.Closeable;
 
 /**
  * 基于 Redis 服务实现的 NaiveConfig 客户端，配置信息变更监听通过 Redis PUB/SUB 命令实现。
+ *
  * <p>更多的 PUB/SUB 信息请参考文档：<a href="https://redis.io/topics/pubsub">https://redis.io/topics/pubsub</a></p>
+ *
  * <p>更多 Redis 信息请参考：<a href="https://redis.io">https://redis.io</a></p>
- * <p>当前是实现是线程安全的。</p>
+ *
+ * <p><strong>说明：</strong>{@code RedisNaiveConfigClient} 类是线程安全的，可在多个线程中使用同一个实例。</p>
  *
  * @author heimuheimu
  */
@@ -117,7 +120,7 @@ public class RedisNaiveConfigClient implements NaiveConfigClient, Closeable {
     }
 
     /**
-     * 执行 NaiveConfig 客户端初始化操作
+     * 执行 NaiveConfig 客户端初始化操作。
      *
      * @throws NaiveConfigException 如果初始化过程中发生错误，将会抛出此异常
      */
@@ -144,8 +147,9 @@ public class RedisNaiveConfigClient implements NaiveConfigClient, Closeable {
     }
 
     /**
-     * 执行 NaiveConfig 客户端关闭操作
-     * <p>注意：该方法不会触发 {@link NaiveConfigClientListener#onClosed(NaiveConfigClient)} 事件</p>
+     * 执行 NaiveConfig 客户端关闭操作。
+     *
+     * <p>注意：该方法不会触发 {@link NaiveConfigClientListener#onClosed(NaiveConfigClient)} 事件。</p>
      */
     @Override
     public void close() {

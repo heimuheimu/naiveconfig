@@ -27,7 +27,7 @@ package com.heimuheimu.naiveconfig;
 import com.heimuheimu.naiveconfig.exception.NaiveConfigException;
 
 /**
- * NaiveConfig 配置管理器，提供配置信息获取、设置、删除等管理操作。
+ * NaiveConfig 配置管理器，提供配置信息获取、设置等管理操作。
  *
  * <p><strong>说明：</strong> {@code NaiveConfigManager} 的实现类必须是线程安全的。</p>
  *

@@ -25,6 +25,8 @@
 package com.heimuheimu.naiveconfig.spring;
 
 import com.heimuheimu.naiveconfig.redis.OneTimeRedisClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -34,27 +36,29 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.util.StringValueResolver;
 
 /**
- * 通过 Redis 远程加载 Spring 启动所需的配置信息，例如 DB 地址、缓存地址等，{@code SpringStartupConfigLoader} 将会对 "({" 开头，
+ * 通过 Redis 远程加载 Spring 启动所需的配置信息，例如 DB 地址、缓存地址等，{@code PropertyRedisConfigurer} 将会对 "({" 开头，
  * 并以 "})" 结尾的变量进行匹配替换。
  *
  * <p>使用场景：相同的 DB 或缓存等地址配置在多个项目中被使用。</p>
  *
  * @author heimuheimu
  */
-public class SpringStartupConfigLoader implements BeanFactoryPostProcessor {
-
+public class PropertyRedisConfigurer implements BeanFactoryPostProcessor {
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(PropertyRedisConfigurer.class);
+    
     /**
      * 一次性 Redis 客户端
      */
     private final OneTimeRedisClient configRedisClient;
 
     /**
-     * 构造一个 {@coe SpringStartupConfigLoader} 实例。
+     * 构造一个 {@coe PropertyRedisConfigurer} 实例。
      *
      * @param configRedisHost Redis 服务主机地址，由主机名和端口组成，":"符号分割，例如：localhost:6379
      * @throws IllegalArgumentException 如果 Redis 服务主机地址不符合规则，将会抛出此异常
      */
-    public SpringStartupConfigLoader(String configRedisHost) throws IllegalArgumentException {
+    public PropertyRedisConfigurer(String configRedisHost) throws IllegalArgumentException {
         this.configRedisClient = new OneTimeRedisClient(configRedisHost);
     }
 
@@ -88,7 +92,9 @@ public class SpringStartupConfigLoader implements BeanFactoryPostProcessor {
             if (strVal.startsWith("({") && strVal.endsWith("})")) {
                 String key = strVal.substring(2, strVal.length() - 2);
                 String value = configRedisClient.get(key);
-                if (value == null) {
+                if (value != null) {
+                    LOGGER.info("Read redis config success. `key`:`{}`. `value`:`{}`.", key, value);
+                } else {
                     throw new IllegalArgumentException("Could not find redis config property: `" + key + "`.");
                 }
                 return configRedisClient.get(key);

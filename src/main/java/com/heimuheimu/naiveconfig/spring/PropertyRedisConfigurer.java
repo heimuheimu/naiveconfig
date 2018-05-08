@@ -94,10 +94,10 @@ public class PropertyRedisConfigurer implements BeanFactoryPostProcessor {
                 String value = configRedisClient.get(key);
                 if (value != null) {
                     LOGGER.info("Read redis config success. `key`:`{}`. `value`:`{}`.", key, value);
+                    return value;
                 } else {
                     throw new IllegalArgumentException("Could not find redis config property: `" + key + "`.");
                 }
-                return configRedisClient.get(key);
             } else {
                 return strVal;
             }

@@ -11,7 +11,7 @@
     <dependency>
         <groupId>com.heimuheimu</groupId>
         <artifactId>naiveconfig</artifactId>
-        <version>1.1</version>
+        <version>1.0</version>
     </dependency>
 ```
 ## Log4J 配置
@@ -36,7 +36,6 @@ log4j.appender.NAIVECONFIG_CONFIG_SYNC_LOGGER.layout=org.apache.log4j.PatternLay
 log4j.appender.NAIVECONFIG_CONFIG_SYNC_LOGGER.layout.ConversionPattern=%d{ISO8601} %-5p [%F:%L] : %m%n
 ```
 
-## 配置信息变更
 ### Spring 配置
 ```xml
     <!-- NaiveConfig 配置管理器配置，用于变更配置信息 -->
@@ -83,9 +82,6 @@ log4j.appender.NAIVECONFIG_CONFIG_SYNC_LOGGER.layout.ConversionPattern=%d{ISO860
         @Autowired
         private ChatKeywordDao chatKeywordDao;
         
-        @Autowired
-        private NaiveConfigManager naiveConfigManager;
-        
         @Override
         public boolean match(String content) { // 判断聊天内容中是否含有关键词
             for (String keyword : chatKeywordList) {
@@ -119,25 +115,9 @@ log4j.appender.NAIVECONFIG_CONFIG_SYNC_LOGGER.layout.ConversionPattern=%d{ISO860
     }
 ```
 
-## 远程加载 Spring 启动所需的配置信息
-使用示例请查看 [PropertyRedisConfigurer API 说明](https://github.com/heimuheimu/naiveconfig/blob/master/src/main/java/com/heimuheimu/naiveconfig/spring/PropertyRedisConfigurer.java)
-
-## 版本发布记录
-### V1.1
-### 新增特性：
- * 通过 Redis 远程加载 Spring 启动所需的配置信息，[更多信息](https://github.com/heimuheimu/naiveconfig/blob/master/src/main/java/com/heimuheimu/naiveconfig/spring/PropertyRedisConfigurer.java)
-
-***
-
-### V1.0
-### 特性：
- * 将配置信息实时同步到集群所有服务器
- * 配置简单，稳定可靠
- * 通过钉钉实现配置服务故障实时报警 
-
 ## 更多信息
 * [Redis 官网](https://redis.io)
 * [NaiveMonitor 项目主页](https://github.com/heimuheimu/naivemonitor)
-* [NaiveConfig v1.1 API Doc](https://heimuheimu.github.io/naiveconfig/api/v1.1/)
-* [NaiveConfig v1.1 源码下载](https://heimuheimu.github.io/naiveconfig/download/naiveconfig-1.1-sources.jar)
-* [NaiveConfig v1.1 Jar包下载](https://heimuheimu.github.io/naiveconfig/download/naiveconfig-1.1.jar)
+* [NaiveConfig v1.0 API Doc](https://heimuheimu.github.io/naiveconfig/api/v1.0/)
+* [NaiveConfig v1.0 源码下载](https://heimuheimu.github.io/naiveconfig/download/naiveconfig-1.0-sources.jar)
+* [NaiveConfig v1.0 Jar包下载](https://heimuheimu.github.io/naiveconfig/download/naiveconfig-1.0.jar)

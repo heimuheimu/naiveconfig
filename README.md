@@ -82,6 +82,9 @@ log4j.appender.NAIVECONFIG_CONFIG_SYNC_LOGGER.layout.ConversionPattern=%d{ISO860
         @Autowired
         private ChatKeywordDao chatKeywordDao;
         
+        @Autowired
+        private NaiveConfigManager naiveConfigManager;
+        
         @Override
         public boolean match(String content) { // 判断聊天内容中是否含有关键词
             for (String keyword : chatKeywordList) {

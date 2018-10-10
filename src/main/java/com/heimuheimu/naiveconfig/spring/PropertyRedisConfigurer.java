@@ -41,6 +41,24 @@ import org.springframework.util.StringValueResolver;
  *
  * <p>使用场景：相同的 DB 或缓存等地址配置在多个项目中被使用。</p>
  *
+ * <p><b>注意：配置信息必须使用 {@link OneTimeRedisClient} 提前写入，类型为 {@link java.lang.String}</b></p>
+ *
+ * <h3>Spring 配置示例：</h3>
+ * <blockquote>
+ * <pre>
+ * {@code <!-- Redis 配置读取器-->
+ *   <bean name="propertyRedisConfigurer" class="com.heimuheimu.naiveconfig.spring.PropertyRedisConfigurer">
+ *     <constructor-arg index="0" value="127.0.0.1:6379" />
+ *   </bean>
+ *
+ *   <!-- "({demo.memcache.host})" 变量远程加载配置 Demo -->
+ *   <bean id="autoReconnectMemcachedClient" class="com.heimuheimu.naivecache.memcached.advance.AutoReconnectMemcachedClient" destroy-method="close">
+ *     <constructor-arg index="0" value="({demo.memcache.host})" /> <!-- Memcached 服务地址 -->
+ *   </bean>
+ * }
+ * </pre>
+ * </blockquote>
+ *
  * @author heimuheimu
  */
 public class PropertyRedisConfigurer implements BeanFactoryPostProcessor {
@@ -53,7 +71,7 @@ public class PropertyRedisConfigurer implements BeanFactoryPostProcessor {
     private final OneTimeRedisClient configRedisClient;
 
     /**
-     * 构造一个 {@coe PropertyRedisConfigurer} 实例。
+     * 构造一个 {@code PropertyRedisConfigurer} 实例。
      *
      * @param configRedisHost Redis 服务主机地址，由主机名和端口组成，":"符号分割，例如：localhost:6379
      * @throws IllegalArgumentException 如果 Redis 服务主机地址不符合规则，将会抛出此异常

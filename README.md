@@ -1,5 +1,7 @@
 # NaiveConfig: 基于 Redis 实现的配置中心，在集群中实时同步配置信息变更。
 
+[![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/heimuheimu/naiveconfig.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/heimuheimu/naiveconfig/context:java)
+
 ## 使用要求
 * JDK 版本：1.8+ 
 * 依赖类库：

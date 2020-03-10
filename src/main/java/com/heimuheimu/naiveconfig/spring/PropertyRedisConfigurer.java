@@ -35,13 +35,16 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.util.StringValueResolver;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * 通过 Redis 远程加载 Spring 启动所需的配置信息，例如 DB 地址、缓存地址等，{@code PropertyRedisConfigurer} 将会对 "({" 开头，
  * 并以 "})" 结尾的变量进行匹配替换。
  *
  * <p>使用场景：相同的 DB 或缓存等地址配置在多个项目中被使用。</p>
  *
- * <p><b>注意：配置信息必须使用 {@link OneTimeRedisClient} 提前写入，类型为 {@link java.lang.String}</b></p>
+ * <p><b>注意：配置信息必须使用 {@link OneTimeRedisClient} 提前写入，类型为 {@link String}</b></p>
  *
  * <h3>Spring 配置示例：</h3>
  * <blockquote>
@@ -62,22 +65,44 @@ import org.springframework.util.StringValueResolver;
  * @author heimuheimu
  */
 public class PropertyRedisConfigurer implements BeanFactoryPostProcessor {
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(PropertyRedisConfigurer.class);
-    
+
     /**
      * 一次性 Redis 客户端
      */
     private final OneTimeRedisClient configRedisClient;
 
     /**
-     * 构造一个 {@code PropertyRedisConfigurer} 实例。
+     * 如果为 true，遇到无法识别的变量将会抛出 IllegalArgumentException 异常，如果为 false，将会忽略无法识别的变量
+     */
+    private final boolean strictlyMode;
+
+    /**
+     * Redis 配置变量名称正则表达式，以 "({" 开头，并以 "})" 结尾
+     */
+    private final Pattern REDIS_PROPERTY_PATTERN = Pattern.compile("\\(\\{(.+?)}\\)");
+
+    /**
+     * 构造一个 {@code PropertyRedisConfigurer} 实例，strictlyMode 默认为 {@code true}，当遇到无法识别的变量将会抛出 IllegalArgumentException 异常。
      *
      * @param configRedisHost Redis 服务主机地址，由主机名和端口组成，":"符号分割，例如：localhost:6379
      * @throws IllegalArgumentException 如果 Redis 服务主机地址不符合规则，将会抛出此异常
      */
     public PropertyRedisConfigurer(String configRedisHost) throws IllegalArgumentException {
+        this(configRedisHost, true);
+    }
+
+    /**
+     * 构造一个 PropertyRedisConfigurer 实例。
+     *
+     * @param configRedisHost Redis 服务主机地址，由主机名和端口组成，":"符号分割，例如：localhost:6379
+     * @param strictlyMode 如果为 true，遇到无法识别的变量将会抛出 IllegalArgumentException 异常，如果为 false，将会忽略无法识别的变量
+     * @throws IllegalArgumentException 如果 Redis 服务主机地址不符合规则，将会抛出此异常
+     */
+    public PropertyRedisConfigurer(String configRedisHost, boolean strictlyMode) throws IllegalArgumentException {
         this.configRedisClient = new OneTimeRedisClient(configRedisHost);
+        this.strictlyMode = strictlyMode;
     }
 
     @Override
@@ -107,18 +132,28 @@ public class PropertyRedisConfigurer implements BeanFactoryPostProcessor {
 
         @Override
         public String resolveStringValue(String strVal) {
-            if (strVal.startsWith("({") && strVal.endsWith("})")) {
-                String key = strVal.substring(2, strVal.length() - 2);
+            if (strVal == null || strVal.isEmpty() || !strVal.contains("({")) {
+                return strVal;
+            }
+            Matcher matcher = REDIS_PROPERTY_PATTERN.matcher(strVal);
+            StringBuffer buffer = new StringBuffer();
+            while (matcher.find()) {
+                String key = matcher.group(1);
                 String value = configRedisClient.get(key);
                 if (value != null) {
                     LOGGER.info("Read redis config success. `key`:`{}`. `value`:`{}`.", key, value);
-                    return value;
                 } else {
-                    throw new IllegalArgumentException("Could not find redis config property: `" + key + "`.");
+                    LOGGER.error("Could not find redis config property: `" + key + "`.");
+                    if (strictlyMode) {
+                        throw new IllegalArgumentException("Could not find redis config property: `" + key + "`.");
+                    } else {
+                        value = "({" + key + ")}";
+                    }
                 }
-            } else {
-                return strVal;
+                matcher.appendReplacement(buffer, value);
             }
+            matcher.appendTail(buffer);
+            return buffer.toString();
         }
     }
 }

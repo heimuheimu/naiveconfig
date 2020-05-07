@@ -115,9 +115,9 @@ public class PropertyRedisConfigurer implements BeanFactoryPostProcessor {
             BeanDefinition bd = beanFactoryToProcess.getBeanDefinition(curName);
             try {
                 visitor.visitBeanDefinition(bd);
-            }
-            catch (Exception ex) {
-                throw new BeanDefinitionStoreException(bd.getResourceDescription(), curName, ex.getMessage());
+            } catch (Exception ex) {
+                throw new BeanDefinitionStoreException(bd.getResourceDescription(), curName,
+                        ex.getMessage(), ex);
             }
         }
 
@@ -150,7 +150,7 @@ public class PropertyRedisConfigurer implements BeanFactoryPostProcessor {
                         value = "({" + key + ")}";
                     }
                 }
-                matcher.appendReplacement(buffer, value);
+                matcher.appendReplacement(buffer, Matcher.quoteReplacement(value));
             }
             matcher.appendTail(buffer);
             return buffer.toString();
